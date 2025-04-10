@@ -8,6 +8,9 @@
 #include <string.h>
 #include <wchar.h>
 
+// Vide les caractères restants dans le tampon après une lecture wide.
+void viderBuffer();
+
 // Demande un entier valide à l'utilisateur en s'assurant qu'il entre bien un nombre.
 int demanderEntierValide(CodeErreur *erreur);
 

@@ -76,3 +76,7 @@ Pour exécuter l'application :
 
 ## À propos
 Projet développé par **Leul Nebeyu MULUGETA** dans le cadre d'études en développement logiciel.
+
+## Licence
+
+Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.

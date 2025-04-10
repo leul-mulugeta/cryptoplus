@@ -1,5 +1,11 @@
 #include "utilitaires.h"
 
+void viderBuffer()
+{
+    int c;
+    while ((c = getwchar()) != L'\n' && c != WEOF);
+}
+
 int demanderEntierValide(CodeErreur *erreur)
 {
     wchar_t valeur[10];
@@ -10,7 +16,13 @@ int demanderEntierValide(CodeErreur *erreur)
         fgetws(valeur, sizeof(valeur) / sizeof(valeur[0]), stdin);
 
         int l = wcslen(valeur);
-        // Supprime le retour à la ligne
+        // Vérifier si l'entrée était trop longue
+        if (l > 0 && valeur[l - 1] != L'\n')
+        {
+            viderBuffer();  // Vide le reste de la ligne
+        }
+
+        // Supprime le retour à la ligne si présent
         if (l > 0 && valeur[l - 1] == L'\n')
         {
             valeur[l - 1] = L'\0';
@@ -22,9 +34,8 @@ int demanderEntierValide(CodeErreur *erreur)
         // Vérifie si la conversion a échoué
         if (!v)
         {
-            printf("Erreur lors de la conversion du texte.\n");
-            *erreur = ERREUR_OK;
-            printf("\nVotre choix :");
+            printf("Erreur lors de la conversion du chaine.\n");
+            printf("\nVotre choix : ");
             continue;
         }
 
@@ -38,7 +49,7 @@ int demanderEntierValide(CodeErreur *erreur)
         else
         {
             printf("\nVeuillez entrer un seul chiffre valide.\n");
-            printf("\nVotre choix :");
+            printf("\nVotre choix : ");
             free(v);
         }
     }
@@ -55,7 +66,7 @@ char *wcharToChar(const wchar_t *wstr, CodeErreur *erreur)
         return NULL;
     }
     len++;
-    
+
     // Allocation de memoire puis effectue la conversion
     char *str = malloc(len);
     if (str)
