@@ -12,11 +12,11 @@ int main()
     while (1)
     {
         // Affichage du menu principal
-        printf("\n**** PROGRAMME DE CHIFFREMENT ****\n");
+        printf("\n\033[1;36m**** PROGRAMME DE CHIFFREMENT ****\033[0m\n");
         printf("1. Chiffrement César\n");
         printf("2. Chiffrement Vigenère\n");
         printf("3. Quitter\n");
-        printf("Votre choix : ");
+        printf("\033[0;32mVotre choix : \033[0m");
 
         CodeErreur erreur = ERREUR_OK;
         int choixAlgo = demanderEntierValide(&erreur);
@@ -29,7 +29,7 @@ int main()
 
         if (choixAlgo != 1 && choixAlgo != 2)
         {
-            printf("\nEntrée invalide. Veuillez choisir entre 1 et 3.\n");
+            printf("\n\033[0;31mEntrée invalide. Veuillez choisir entre 1 et 3.\033[0m\n");
             continue;
         }
 
@@ -39,7 +39,7 @@ int main()
             printf("\n1. Chiffrer un message\n");
             printf("2. Déchiffrer un message\n");
             printf("3. Retour au menu principal\n");
-            printf("Votre choix : ");
+            printf("\033[0;32mVotre choix : \033[0m");
 
             int choixAction = demanderEntierValide(&erreur);
 
@@ -48,7 +48,7 @@ int main()
 
             if (choixAction != 1 && choixAction != 2)
             {
-                printf("\nEntrée invalide. Veuillez choisir entre 1 et 3.\n");
+                printf("\n\033[0;31mEntrée invalide. Veuillez choisir entre 1 et 3.\033[0m\n");
                 continue;
             }
 
@@ -72,19 +72,28 @@ int main()
                 cle = demanderEntierValide(&erreur);
 
                 // Appel au chiffrement ou déchiffrement de César
-                char *messageResult = (choixAction == 1) ? chiffrementCesar(message, longueurM, cle, &erreur) : dechiffrementCesar(message, longueurM, cle, &erreur);
+                char *messageResultat = (choixAction == 1) ? chiffrementCesar(message, longueurM, cle, &erreur) : dechiffrementCesar(message, longueurM, cle, &erreur);
 
-                if (!messageResult)
+                if (!messageResultat)
                 {
                     if (erreur == ERREUR_ALLOCATION_MEMOIRE)
-                        printf("Erreur : échec de l'allocation de mémoire.\n");
+                        printf("\n\033[0;31mErreur : échec de l'allocation de mémoire.\033[0m\n");
                     else if (erreur == ERREUR_CARACTERE_NON_SUPPORTE)
-                        printf("Erreur : caractère non supporté détecté.\n");
+                        printf("\n\033[0;31mErreur : caractère non supporté détecté.\033[0m\n");
                 }
                 else
                 {
-                    printf("\nRésultat : %s\n", messageResult);
-                    free(messageResult);
+                    enregistrerResultat(message, (void *)&cle, messageResultat, choixAlgo, choixAction, &erreur);
+                    if (erreur == ERREUR_OUVERTURE_FICHIER) 
+                    {
+                        printf("\n\033[0;31mErreur : ouverture du fichier.\033[0m\n");
+                        free(messageResultat);
+                    } 
+                    else 
+                    {
+                        printf("\033[1;34m\nRésultat :\033[0m %s\n", messageResultat);
+                        free(messageResultat);
+                    }
                 }
             }
             else // Chiffrement Vigenère
@@ -114,26 +123,35 @@ int main()
 
                 if (!estValide)
                 {
-                    printf("\nErreur : La clé doit contenir uniquement des lettres.\n");
+                    printf("\n\033[0;31mErreur : La clé doit contenir uniquement des lettres.\033[0m\n");
                     continue;
                 }
 
                 // Appel au chiffrement ou déchiffrement de Vigenère
-                char *messageResult = (choixAction == 1) ? chiffrementVigenere(message, longueurM, cle, longueurC, &erreur) : dechiffrementVigenere(message, longueurM, cle, longueurC, &erreur);
+                char *messageResultat = (choixAction == 1) ? chiffrementVigenere(message, longueurM, cle, longueurC, &erreur) : dechiffrementVigenere(message, longueurM, cle, longueurC, &erreur);
 
-                if (!messageResult)
+                if (!messageResultat)
                 {
                     if (erreur == ERREUR_ALLOCATION_MEMOIRE)
-                        printf("Erreur : échec de l'allocation de mémoire.\n");
+                        printf("\n\033[0;31mErreur : échec de l'allocation de mémoire.\033[0m\n");
                     else if (erreur == ERREUR_CARACTERE_NON_SUPPORTE)
-                        printf("Erreur : caractère non supporté détecté.\n");
+                        printf("\n\033[0;31mErreur : caractère non supporté détecté.\033[0m\n");
                     else if (erreur == ERREUR_CONVERSION_WCHAR_TO_CHAR)
-                        printf("Erreur : échec conversion de wchar_t vers char.\n");
+                        printf("\n\033[0;31mErreur : échec conversion de wchar_t vers char.\033[0m\n");
                 }
                 else
                 {
-                    printf("\nRésultat : %s\n", messageResult);
-                    free(messageResult);
+                    enregistrerResultat(message, (void *)cle, messageResultat, choixAlgo, choixAction, &erreur);
+                    if (erreur == ERREUR_OUVERTURE_FICHIER) 
+                    {
+                        printf("\n\033[0;31mErreur : ouverture du fichier.\033[0m\n");
+                        free(messageResultat);
+                    } 
+                    else 
+                    {
+                        printf("\033[1;34m\nRésultat :\033[0m %s\n", messageResultat);
+                        free(messageResultat);
+                    }
                 }
             }
         }

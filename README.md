@@ -9,6 +9,8 @@ CryptoPlus est une application qui permet le **chiffrement et le déchiffrement*
 - Chiffrement et déchiffrement avec l'algorithme de **Vigenère**
 - Gestion des **caractères accentués**
 - Gestion des erreurs avec messages explicatifs
+- Affichage coloré dans la console pour une meilleure lisibilité
+- **Enregistrement des résultats** dans un fichier `resultat.txt` avec la date, le message original, la clé utilisée, et le message chiffré/déchiffré.
 
 ## Algorithmes implémentés
 ### César
