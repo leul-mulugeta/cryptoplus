@@ -42,7 +42,7 @@ int demanderEntierValide(CodeErreur *erreur)
         // Vérifie si l'entrée est bien un nombre et assure qu'il est composé d'1 ou 2 chiffres maximum
         if ((isdigit(v[0]) && v[1] == '\0') || (isdigit(v[0]) && isdigit(v[1]) && v[2] == '\0'))
         {
-            int resultat = v[0] - '0';
+            int resultat = atoi(v);
             free(v);
             return resultat;
         }
